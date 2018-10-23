@@ -1,0 +1,28 @@
+### MySQL Container #########################################
+version: '2'
+
+services:
+
+  mysql:
+    build: docker/mysql
+    volumes_from:
+      - volumes_data
+    ports:
+      - "33077:3306"
+    environment:
+      MYSQL_DATABASE: "Slack_DB"
+      MYSQL_USER: "smAdmin"
+      MYSQL_PASSWORD: "admin"
+      MYSQL_ROOT_PASSWORD: "root"
+    networks:
+      - local
+
+  volumes_data:
+    image: tianon/true
+    volumes:
+      - ./docker/data/mysql:/var/lib/mysql
+    networks:
+      - local
+
+networks:
+  local:

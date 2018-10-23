@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="SlackBot" basedir=".">
+    <target name="docker">
+        <antcall target="docker-build"></antcall>
+        <antcall target="docker-boot"></antcall>
+    </target>
+    <target name="build-db">
+        <antcall target="table-creator"></antcall>
+    </target>
+    <!-- ***** Building the MySQL container **** -->
+    <target name="docker-build">
+        <echo message="Docker: Composing containers"/>
+        <exec executable="docker-compose" failonerror="true">
+            <arg value="build"/>
+            <arg value="--force-rm"/>
+        </exec>
+    </target>
+    <target name="docker-down">
+        <echo message="Docker: Shutting down containers"/>
+        <exec executable="docker-compose" failonerror="true">
+            <arg value="down"/>
+            <arg value="--remove-orphans"/>
+        </exec>
+    </target>
+    <target name="docker-boot">
+        <echo message="Docker: Booting containers"/>
+        <exec executable="docker-compose" failonerror="true">
+            <arg value="up"/>
+            <arg value="-d"/>
+        </exec>
+    </target>
+    <target name="table-creator">
+        <echo message="Creating tables"/>
+        <exec executable="python">
+            <arg value="database/database_table_creator.py"/>
+        </exec>
+    </target>
+</project>

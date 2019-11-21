@@ -37,6 +37,12 @@ if sc.rtm_connect():
             if botid_string in textLower:
                 MatchString = re.findall(r"(?<=<@)\S{9}(?=>)", textLower)
                 if message[0].get('user'):
+                    if message[0].get('user') == "U1GU6BC6R":
+                        sc.api_call(
+                            "chat.postMessage",
+                            channel=message[0].get('channel'),
+                            text="Ryan's A Bitch"
+                        )
                     if message[0].get('user').lower() != botid_string.lower():
                         if MatchString[0] == starterbot_id.lower():
                             if "help" in textLower:
@@ -83,31 +89,38 @@ if sc.rtm_connect():
                                     text=string
                                 )
                             elif ":beer:" in message[0].get('text').lower() and MatchString[1]:
-                                beerCount = re.findall(r":beer:", textLower)
-                                beerCount = len(beerCount)
-                                i = 1
-                                while i <= beerCount:
-                                    if MatchString[1] != message[0].get('user').lower():
-                                        beerGiver, created = BeerScore.get_or_create(
-                                            slackId=message[0].get('user')
-                                        )
+                                if message[0].get('user') == "U1S9DSQAU":
+                                    sc.api_call(
+                                        "chat.postMessage",
+                                        channel=message[0].get('channel'),
+                                        text="fuck you ethan"
+                                    )
+                                else:
+                                    beerCount = re.findall(r":beer:", textLower)
+                                    beerCount = len(beerCount)
+                                    i = 1
+                                    while i <= beerCount:
+                                        if MatchString[1] != message[0].get('user').lower():
+                                            beerGiver, created = BeerScore.get_or_create(
+                                                slackId=message[0].get('user')
+                                            )
 
-                                        beerReciever, created = BeerScore.get_or_create(
-                                            slackId=MatchString[1]
-                                        )
-                                        if beerGiver.give_beer(beerReciever):
-                                            string = "> :beer: given to <@" + MatchString[1].upper() + "> by <@" + message[0].get(
-                                                'user') + ">"
-                                        else:
-                                            string = "<@" + message[0].get('user') + "> You are out of beers to give."
-                                        i += 1
-                                        sc.api_call(
-                                            "chat.postMessage",
-                                            channel=message[0].get('channel'),
-                                            text=string
-                                        )
-                                        # if i > 5:
-                                        #     break
+                                            beerReciever, created = BeerScore.get_or_create(
+                                                slackId=MatchString[1]
+                                            )
+                                            if beerGiver.give_beer(beerReciever):
+                                                string = "> :beer: given to <@" + MatchString[1].upper() + "> by <@" + message[0].get(
+                                                    'user') + ">"
+                                            else:
+                                                string = "<@" + message[0].get('user') + "> You are out of beers to give."
+                                            i += 1
+                                            sc.api_call(
+                                                "chat.postMessage",
+                                                channel=message[0].get('channel'),
+                                                text=string
+                                            )
+                                            # if i > 5:
+                                            #     break
                             elif "roster" in message[0].get('text').lower():
                                 data = message[0].get('text').lower().split()
                                 team = data[-1]
@@ -115,6 +128,6 @@ if sc.rtm_connect():
 
 
 
-        time.sleep(1)
+        time.sleep(0.25)
 else:
     print("Connection Failed")
